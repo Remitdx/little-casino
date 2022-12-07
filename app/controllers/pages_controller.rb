@@ -3,4 +3,13 @@ class PagesController < ApplicationController
 
   def home
   end
+
+  def blackjack
+  end
+
+  def roulette
+  end
+
+  def poker
+  end
 end
