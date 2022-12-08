@@ -1,3 +1,18 @@
-<h1>Welcomme to Black Jack !</h1>
+<h1>Welcome to Black Jack !</h1>
+
+
+
+<% if @hand.empty? %>
+  <%= button_to "Start game", game_blackjack_path, params: {start: true}, method: :post, class:"btn btn-success" %>
+<% else %>
+  <%= @hand %>
+  <% @hand.each do |card| %>
+    <p><%= card["code"] %></p>
+    <%= image_tag(card["image"], width: "100px")  %>
+  <% end %>
+  <%= button_to "Draw", game_blackjack_path, params: {start: false, hand: @hand , deck_id: @deck_id}, method: :post, class:"btn btn-success" %>
+<% end  %>
+
+
 
 <%= link_to "Leave this game", game_path(params[:game_id]), class:"btn btn-success"%>

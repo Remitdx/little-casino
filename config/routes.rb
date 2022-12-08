@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "profile", to: "users#profile"
   resources :games do
     get "blackjack", to: "pages#blackjack"
+    post "blackjack", to: "pages#blackjack"
     get "poker", to: "pages#poker"
     get "roulette", to: "pages#roulette"
   end
