@@ -9,7 +9,7 @@ class PagesController < ApplicationController
   def blackjack
     if params["start"].nil?
       @hand = []
-    elsif params["start"] == "true"
+    elsif params["start"] == "true" # le joueur démarre la partie de blackjack
       @deck_id = getNewDeck
       @hand= []
       hand = drawCards(@deck_id, 2)
@@ -17,7 +17,14 @@ class PagesController < ApplicationController
         @hand << card["code"]
       end
       @score = scoreCalculation(@hand)
-    else
+    elsif params["start"] == "stand" # comparaison du score avec la banque
+      @deck_id = params[:deck_id]
+      @hand = params[:hand]
+      @score = scoreCalculation(@hand)
+      bank = drawCards(@deck_id, 2)
+      raise
+
+    else # le joueur pioche
       card = drawCards(params["deck_id"], 1)
       @deck_id = params[:deck_id]
       @hand = params[:hand]
@@ -60,6 +67,11 @@ class PagesController < ApplicationController
       else
         score += card[0].to_i
       end
+    end
+    if score == 21 && hand.count == 2
+      score = "Black Jack !"
+    elsif score > 21
+      score = "Game over ..."
     end
     return score
   end

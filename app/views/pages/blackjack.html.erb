@@ -8,8 +8,13 @@
   <% @hand.each do |card| %>
     <%= image_tag("https://deckofcardsapi.com/static/img/#{card}.png", width: "100px")  %>
   <% end %>
-  <p>Your actual score :<%= @score %></p>
-  <%= button_to "Draw", game_blackjack_path, params: {start: false, hand: @hand , deck_id: @deck_id}, method: :post, class:"btn btn-success" %>
+  <p>Your actual score : <%= @score %></p>
+  <% unless @score.is_a?(String) %>
+    <%= button_to "Draw", game_blackjack_path, params: {start: false, hand: @hand , deck_id: @deck_id}, method: :post, class:"btn btn-success" %>
+    <%= button_to "Stand", game_blackjack_path, params: {start: "stand", hand: @hand , deck_id: @deck_id}, method: :post, class:"btn btn-danger" %>
+  <% else  %>
+    <%= button_to "Restart game", game_blackjack_path, params: {start: true}, method: :post, class:"btn btn-success" %>
+  <% end %>
 <% end  %>
 
 
