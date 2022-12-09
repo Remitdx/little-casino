@@ -11,13 +11,18 @@ class PagesController < ApplicationController
       @hand = []
     elsif params["start"] == "true"
       @deck_id = getNewDeck
+      @hand= []
       hand = drawCards(@deck_id, 2)
-      @hand = hand["cards"]
+      hand["cards"].each do |card|
+        @hand << card["code"]
+      end
+      @score = scoreCalculation(@hand)
     else
       card = drawCards(params["deck_id"], 1)
+      @deck_id = params[:deck_id]
       @hand = params[:hand]
-      raise
-      @hand << card["cards"][0]
+      @hand << card["cards"][0]["code"]
+      @score = scoreCalculation(@hand)
     end
   end
 
@@ -39,5 +44,23 @@ class PagesController < ApplicationController
     url = "https://www.deckofcardsapi.com/api/deck/#{deck_id}/draw/?count=#{n}"
     response = HTTParty.get(url)
     response.parsed_response
+  end
+
+  def scoreCalculation(hand)
+    score = 0
+    hand.each do |card|
+      if card[0].match?("A")
+        if score > 11
+          score += 1
+        else
+          score += 10
+        end
+      elsif card[0].match?(/[A-Z]|0/)
+        score += 10
+      else
+        score += card[0].to_i
+      end
+    end
+    return score
   end
 end

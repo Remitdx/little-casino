@@ -5,11 +5,10 @@
 <% if @hand.empty? %>
   <%= button_to "Start game", game_blackjack_path, params: {start: true}, method: :post, class:"btn btn-success" %>
 <% else %>
-  <%= @hand %>
   <% @hand.each do |card| %>
-    <p><%= card["code"] %></p>
-    <%= image_tag(card["image"], width: "100px")  %>
+    <%= image_tag("https://deckofcardsapi.com/static/img/#{card}.png", width: "100px")  %>
   <% end %>
+  <p>Your actual score :<%= @score %></p>
   <%= button_to "Draw", game_blackjack_path, params: {start: false, hand: @hand , deck_id: @deck_id}, method: :post, class:"btn btn-success" %>
 <% end  %>
 
